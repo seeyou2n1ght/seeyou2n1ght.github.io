@@ -1,46 +1,58 @@
-name: Deploy Hugo Site to GitHub Pages
+# 工作流名称
+name: Deploy Hugo Site to Pages
 
 on:
+  # 监听 main 分支的 push 动作
   push:
-    branches: [main]
+    branches: ["main"]
+
+  # 允许你在 GitHub 界面手动触发构建
   workflow_dispatch:
 
+# 设置权限，允许 GITHUB_TOKEN 修改仓库内容
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# 并发处理：防止多个 push 同时触发导致冲突
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
+# 默认使用 bash shell
 defaults:
   run:
     shell: bash
 
 jobs:
+  # 构建任务
   build:
     runs-on: ubuntu-latest
     env:
-      HUGO_VERSION: 0.140.0
+      HUGO_VERSION: 0.128.0 # 建议锁定版本，避免未来 Hugo 更新导致构建失败
     steps:
       - name: Install Hugo CLI
         run: |
-          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb
-          sudo dpkg -i ${{ runner.temp }}/hugo.deb
-          
+          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
+          && sudo dpkg -i ${{ runner.temp }}/hugo.deb
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: recursive
-          fetch-depth: 0
+          submodules: recursive # 必须：因为主题通常是作为 submodule 引入的
+          fetch-depth: 0        # 建议：获取完整 git 历史，某些主题需要它来显示"最后修改时间"
 
       - name: Setup Pages
         id: pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
+
+      - name: Install Node.js dependencies
+        run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
 
       - name: Build with Hugo
         env:
+          # 针对 Hugo 生产环境的优化参数
           HUGO_ENVIRONMENT: production
           HUGO_ENV: production
         run: |
@@ -54,6 +66,7 @@ jobs:
         with:
           path: ./public
 
+  # 部署任务
   deploy:
     environment:
       name: github-pages

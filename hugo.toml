@@ -1,0 +1,79 @@
+baseURL = 'https://seeyou2n1ght.github.io'
+languageCode = 'zh-cn'
+title = 'seeyou2n1ght'
+theme = 'PaperMod'
+
+[params]
+  author = 'seeyou2n1ght'
+  description = 'AI 研究与行业洞察'
+  defaultTheme = 'auto'
+  ShowReadingTime = true
+  ShowShareButtons = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowWordCount = true
+  ShowRssButtonInSectionTermList = true
+  UseHugoToc = true
+  disableSpecial1stPost = false
+  disableScrollToTop = false
+  comments = false
+  hidemeta = false
+  hideSummary = false
+  showtoc = true
+  tocopen = false
+
+  [params.profileMode]
+    enabled = true
+    title = "seeyou2n1ght"
+    subtitle = "AI 研究 / 行业洞察 / 技术观察"
+    imageUrl = ""
+    imageTitle = ""
+    imageWidth = 120
+    imageHeight = 120
+    buttons = [
+      { name = "报告", url = "posts" },
+      { name = "标签", url = "tags" }
+    ]
+
+  [params.homeInfoParams]
+    Title = "👋 欢迎"
+    Content = "这里记录 AI 行业研究、技术洞察和各类分析报告。"
+
+[[params.socialIcons]]
+  name = "github"
+  url = "https://github.com/seeyou2n1ght"
+
+[params.assets]
+  disableHLJS = true
+
+[[menu.main]]
+  identifier = "home"
+  name = "首页"
+  url = "/"
+  weight = 10
+
+[[menu.main]]
+  identifier = "posts"
+  name = "报告"
+  url = "/posts/"
+  weight = 20
+
+[[menu.main]]
+  identifier = "tags"
+  name = "标签"
+  url = "/tags/"
+  weight = 30
+
+[[menu.main]]
+  identifier = "archive"
+  name = "归档"
+  url = "/archives/"
+  weight = 40
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"

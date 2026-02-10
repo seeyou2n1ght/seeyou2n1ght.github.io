@@ -1,4 +1,11 @@
-# OpenClaw 构建历程深度分析报告
+---
+title: "OpenClaw 构建历程深度分析报告"
+date: 2026-02-10T12:00:00Z
+draft: false
+tags: ["报告"]
+categories: ["技术分析"]
+---
+
 
 **分析对象**: https://github.com/openclaw/openclaw  
 **分析时间**: 2026年2月10日  

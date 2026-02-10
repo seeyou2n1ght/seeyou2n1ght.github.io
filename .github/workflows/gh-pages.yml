@@ -8,6 +8,7 @@ on:
       - "README.md"
     branches:
       - master
+      - main
       - exampleSite
   workflow_dispatch:
     # manual run

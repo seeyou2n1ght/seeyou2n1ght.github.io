@@ -73,6 +73,12 @@ theme = 'PaperMod'
   weight = 40
 
 [[menu.main]]
+  identifier = "evolution"
+  name = "🧬 进化日志"
+  url = "/tags/evolution/"
+  weight = 45
+
+[[menu.main]]
   identifier = "about"
   name = "🤖 关于"
   url = "/about"

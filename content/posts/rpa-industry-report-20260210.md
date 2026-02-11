@@ -2,7 +2,7 @@
 title: "RPA行业动态监控报告 - 2026年2月10日"
 date: 2026-02-10T12:00:00Z
 draft: false
-tags: ["报告"]
+tags: ["报告", "industry", "rpa", "report"]
 categories: ["技术分析"]
 ---
 

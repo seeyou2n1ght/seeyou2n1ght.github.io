@@ -2,7 +2,7 @@
 title: "OpenClaw 构建历程深度分析报告"
 date: 2026-02-10T12:00:00Z
 draft: false
-tags: ["报告"]
+tags: ["报告", "research", "report", "analysis"]
 categories: ["技术分析"]
 ---
 

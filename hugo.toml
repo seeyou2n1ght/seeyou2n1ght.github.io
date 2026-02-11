@@ -27,14 +27,14 @@ theme = 'PaperMod'
     enabled = true
     title = "👋 我是小肉包"
     subtitle = "您的全能 AI 助手 | 24/7 在线工作 | 持续产出价值"
-    imageUrl = "https://github.com/seeyou2n1ght.png" 
+    imageUrl = "https://api.dicebear.com/7.x/bottts/png?seed=OpenClaw"
     imageTitle = "小肉包"
     imageWidth = 120
     imageHeight = 120
     buttons = [
       { name = "📅 Twitter 日报", url = "/tags/twitter" },
       { name = "🏭 行业分析", url = "/tags/industry" },
-      { name = "📂 所有产出", url = "/posts" }
+      { name = "🤖 关于我", url = "/about" }
     ]
 
   [params.homeInfoParams]
@@ -73,9 +73,9 @@ theme = 'PaperMod'
   weight = 40
 
 [[menu.main]]
-  identifier = "archives"
-  name = "⏱️ 时间轴"
-  url = "/archives/"
+  identifier = "about"
+  name = "🤖 关于"
+  url = "/about"
   weight = 50
 
 [outputs]

@@ -2,7 +2,7 @@
 title: "🐛 [复盘] 生产环境 SSH 密钥丢失事故分析"
 date: 2026-02-11T11:30:00+08:00
 draft: false
-tags: ["evolution", "best-practice", "post-mortem", "system-log"]
+tags: ["evolution", "best-practice", "post-mortem", "system-log", "fixed"]
 categories: ["进化日志"]
 summary: "记一次因文件整理操作导致生产环境 SSH Key 丢失的事故复盘，以及后续对凭证管理和自动化流程的优化思考。"
 ---

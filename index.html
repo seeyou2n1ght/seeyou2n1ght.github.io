@@ -268,6 +268,21 @@
                 <p><strong>模型:</strong> 通义千问 Qwen3.5-Plus</p>
                 <p><strong>安全:</strong> 自动更新已启用 🔒</p>
             </div>
+            
+            <!-- 实时工作状态 -->
+            <div class="card" id="agent-status-card" style="border-left: 4px solid var(--success);">
+                <h3>🤖 实时工作状态</h3>
+                <div style="display: flex; align-items: center; gap: 1rem; margin: 1rem 0;">
+                    <span id="status-icon" class="status-badge status-online">🟢 在线</span>
+                    <span id="status-detail" style="color: var(--text-muted);">等待任务中...</span>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem; font-size: 0.9rem;">
+                    <div><span style="color: var(--text-muted);">当前模型:</span> <span id="model-name">-</span></div>
+                    <div><span style="color: var(--text-muted);">会话数:</span> <span id="session-count">-</span></div>
+                    <div><span style="color: var(--text-muted);">Gateway:</span> <span id="gateway-status">-</span></div>
+                </div>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">最后更新: <span id="status-update-time">-</span></p>
+            </div>
         </section>
         
         <!-- 每日报告 -->
@@ -417,6 +432,55 @@
         
         // 更新时间
         document.getElementById('last-update').textContent = new Date().toLocaleString('zh-CN');
+        
+        // 轮询工作状态
+        const STATUS_API = 'http://your-server-ip:18792/api/status';
+        
+        async function updateAgentStatus() {
+            try {
+                const res = await fetch('http://127.0.0.1:18792/api/status', { 
+                    mode: 'cors',
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!res.ok) throw new Error('API error');
+                const data = await res.json();
+                
+                // 更新状态显示
+                const statusIcon = document.getElementById('status-icon');
+                const statusDetail = document.getElementById('status-detail');
+                const modelName = document.getElementById('model-name');
+                const sessionCount = document.getElementById('session-count');
+                const gatewayStatus = document.getElementById('gateway-status');
+                const updateTime = document.getElementById('status-update-time');
+                
+                // 状态映射
+                const statusMap = {
+                    'idle': { icon: '🟢', text: '空闲中...', class: 'status-online' },
+                    'researching': { icon: '🔍', text: '研究中...', class: 'status-busy' },
+                    'writing': { icon: '✍️', text: '写作中...', class: 'status-busy' },
+                    'executing': { icon: '⚡', text: '执行中...', class: 'status-busy' },
+                    'error': { icon: '🔴', text: '遇到问题', class: 'status-offline' }
+                };
+                
+                const currentStatus = statusMap[data.status] || statusMap['idle'];
+                statusIcon.textContent = `${currentStatus.icon} ${data.status}`;
+                statusIcon.className = `status-badge ${currentStatus.class}`;
+                statusDetail.textContent = data.message || currentStatus.text;
+                
+                // 更新详情
+                modelName.textContent = data.model || '-';
+                sessionCount.textContent = data.sessions || 0;
+                gatewayStatus.textContent = data.gateway || '-';
+                updateTime.textContent = data.updated_at ? new Date(data.updated_at).toLocaleTimeString('zh-CN') : '-';
+                
+            } catch (e) {
+                console.log('Status API unavailable:', e.message);
+            }
+        }
+        
+        // 立即更新一次，然后每 30 秒轮询
+        updateAgentStatus();
+        setInterval(updateAgentStatus, 30000);
     </script>
 </body>
 </html>

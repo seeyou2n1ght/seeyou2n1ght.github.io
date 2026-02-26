@@ -17,9 +17,19 @@
             --success: #3fb950;
             --warning: #d29922;
             --danger: #f85149;
-            --office-bg: #1a1f26;
-            --desk: #3d4f5f;
-            --floor: #2d333b;
+            
+            /* 星露谷配色 */
+            --sv-grass: #5d9c59;
+            --sv-grass-dark: #4a7c48;
+            --sv-dirt: #8b6914;
+            --sv-dirt-light: #a67c00;
+            --sv-sky: #87ceeb;
+            --sv-wood: #8b4513;
+            --sv-wood-light: #a0522d;
+            --sv-stone: #696969;
+            --sv-water: #4a90d9;
+            --sv-flowers: #ff6b6b;
+            --sv-sun: #ffd700;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,7 +44,6 @@
         
         .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
         
-        /* 顶部布局：像素办公室 + 信息 */
         .top-section {
             display: grid;
             grid-template-columns: 400px 1fr;
@@ -46,136 +55,369 @@
             .top-section { grid-template-columns: 1fr; }
         }
         
-        /* 像素办公室 */
+        /* 星露谷风格办公室 */
         .office-container {
-            background: var(--office-bg);
-            border: 2px solid var(--border);
-            border-radius: 12px;
+            background: linear-gradient(180deg, #1a2634 0%, #2d3a4a 100%);
+            border: 3px solid var(--sv-wood);
+            border-radius: 8px;
             padding: 1rem;
             position: relative;
-            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,0,0,0.3);
         }
         
         .office-title {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--sv-sun);
+            margin-bottom: 0.75rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            text-shadow: 1px 1px 0 #000;
+            font-family: 'Courier New', monospace;
         }
         
         .office {
             width: 100%;
-            height: 280px;
+            height: 260px;
             position: relative;
-            background: linear-gradient(180deg, var(--office-bg) 60%, var(--floor) 60%);
-            border-radius: 8px;
+            border-radius: 4px;
             overflow: hidden;
+            image-rendering: pixelated;
         }
         
-        /* 办公桌 */
-        .desk {
+        /* 天空层 */
+        .sky {
             position: absolute;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 160px;
-            height: 50px;
-            background: var(--desk);
-            border-radius: 4px;
-        }
-        
-        .desk::before {
-            content: '💻';
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 24px;
-        }
-        
-        /* 休息区 */
-        .breakroom {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 40px;
-            background: #2a3a4a;
-            border-radius: 4px;
-        }
-        
-        .breakroom::before {
-            content: '☕';
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 18px;
-        }
-        
-        /* 书架 */
-        .bookshelf {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 50px;
+            top: 0;
+            left: 0;
+            right: 0;
             height: 80px;
-            background: #4a3f35;
-            border-radius: 4px;
+            background: linear-gradient(180deg, #5b9bd5 0%, #87ceeb 50%, #b0e0e6 100%);
         }
         
-        .bookshelf::after {
-            content: '';
+        /* 太阳 */
+        .sun {
             position: absolute;
             top: 10px;
-            left: 5px;
-            right: 5px;
-            height: 15px;
-            background: linear-gradient(90deg, #e74c3c, #3498db, #2ecc71, #f1c40f);
+            right: 30px;
+            width: 32px;
+            height: 32px;
+            background: radial-gradient(circle, #fff176 0%, #ffd700 40%, #ff8c00 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 20px #ffd700, 0 0 40px #ffa500;
+            animation: sunGlow 4s ease-in-out infinite;
+        }
+        
+        @keyframes sunGlow {
+            0%, 100% { box-shadow: 0 0 20px #ffd700, 0 0 40px #ffa500; }
+            50% { box-shadow: 0 0 30px #ffd700, 0 0 60px #ffa500; }
+        }
+        
+        /* 云朵 */
+        .cloud {
+            position: absolute;
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            animation: cloudMove 20s linear infinite;
+        }
+        
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: inherit;
+            border-radius: 50%;
+        }
+        
+        .cloud-1 { top: 15px; left: 20px; width: 40px; height: 16px; }
+        .cloud-1::before { width: 16px; height: 16px; top: -8px; left: 6px; }
+        .cloud-1::after { width: 20px; height: 20px; top: -10px; left: 16px; }
+        
+        .cloud-2 { top: 30px; left: 120px; width: 50px; height: 18px; animation-delay: -10s; }
+        .cloud-2::before { width: 20px; height: 20px; top: -10px; left: 8px; }
+        .cloud-2::after { width: 24px; height: 24px; top: -12px; left: 22px; }
+        
+        @keyframes cloudMove {
+            from { transform: translateX(-60px); }
+            to { transform: translateX(400px); }
+        }
+        
+        /* 远景山 */
+        .mountain {
+            position: absolute;
+            top: 50px;
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 60px solid #6b8e6b;
+        }
+        
+        .mountain-1 { left: 10px; }
+        .mountain-2 { left: 80px; border-bottom-color: #5a7d5a; }
+        .mountain-3 { left: 200px; border-bottom-color: #6b8e6b; }
+        .mountain-4 { left: 280px; border-bottom-color: #5a7d5a; }
+        
+        /* 地面草地 */
+        .ground {
+            position: absolute;
+            top: 80px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, 
+                var(--sv-grass) 0%, 
+                var(--sv-grass-dark) 20%, 
+                #3d5c3a 100%);
+        }
+        
+        /* 草地纹理 */
+        .grass-texture {
+            position: absolute;
+            top: 80px;
+            left: 0;
+            right: 0;
+            height: 180px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, #6ab06b 2px, transparent 2px),
+                radial-gradient(circle at 30% 60%, #6ab06b 2px, transparent 2px),
+                radial-gradient(circle at 50% 30%, #6ab06b 1px, transparent 1px),
+                radial-gradient(circle at 70% 70%, #6ab06b 2px, transparent 2px),
+                radial-gradient(circle at 90% 40%, #6ab06b 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.7;
+        }
+        
+        /* 小路 */
+        .path {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100%;
+            background: linear-gradient(180deg, #8b7355 0%, #6b5344 100%);
+            clip-path: polygon(30% 0, 70% 0, 100% 100%, 0% 100%);
+        }
+        
+        /* 像素风房子 */
+        .house {
+            position: absolute;
+            bottom: 60px;
+            left: 30px;
+            width: 100px;
+            height: 90px;
+        }
+        
+        /* 房子墙壁 */
+        .house-wall {
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+            width: 80px;
+            height: 50px;
+            background: linear-gradient(90deg, #deb887 0%, #d2b48c 50%, #deb887 100%);
+            border: 2px solid #8b4513;
+        }
+        
+        /* 房子屋顶 */
+        .house-roof {
+            position: absolute;
+            bottom: 50px;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 35px solid #8b0000;
+        }
+        
+        /* 门 */
+        .door {
+            position: absolute;
+            bottom: 0;
+            left: 35px;
+            width: 25px;
+            height: 35px;
+            background: linear-gradient(90deg, #654321 0%, #8b4513 50%, #654321 100%);
+            border: 2px solid #3d2817;
+        }
+        
+        .door::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 4px;
+            width: 4px;
+            height: 4px;
+            background: #ffd700;
+            border-radius: 50%;
         }
         
         /* 窗户 */
         .window {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 80px;
-            height: 60px;
-            background: linear-gradient(180deg, #1e3a5f 0%, #2d5a87 100%);
-            border: 4px solid #4a5568;
-            border-radius: 4px;
-        }
-        
-        .window::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: #4a5568;
+            bottom: 25px;
+            left: 18px;
+            width: 20px;
+            height: 20px;
+            background: #87ceeb;
+            border: 3px solid #8b4513;
         }
         
         .window::before {
             content: '';
             position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #8b4513;
+        }
+        
+        .window::after {
+            content: '';
+            position: absolute;
             top: 0;
             bottom: 0;
             left: 50%;
-            width: 4px;
-            background: #4a5568;
-            transform: translateX(-50%);
+            width: 2px;
+            background: #8b4513;
         }
         
-        /* 像素小人 */
+        /* 烟囱 */
+        .chimney {
+            position: absolute;
+            bottom: 85px;
+            left: 65px;
+            width: 15px;
+            height: 25px;
+            background: #8b4513;
+        }
+        
+        /* 烟囱烟 */
+        .smoke {
+            position: absolute;
+            bottom: 110px;
+            left: 70px;
+            width: 8px;
+            height: 8px;
+            background: rgba(200,200,200,0.7);
+            border-radius: 50%;
+            animation: smokeRise 3s ease-out infinite;
+        }
+        
+        .smoke:nth-child(2) { animation-delay: 1s; left: 75px; }
+        .smoke:nth-child(3) { animation-delay: 2s; left: 68px; }
+        
+        @keyframes smokeRise {
+            0% { opacity: 0.8; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-30px) scale(1.5); }
+        }
+        
+        /* 鸡窝 */
+        .chicken-coop {
+            position: absolute;
+            bottom: 60px;
+            right: 30px;
+            width: 70px;
+            height: 50px;
+        }
+        
+        .coop-wall {
+            position: absolute;
+            bottom: 0;
+            width: 70px;
+            height: 35px;
+            background: #a0522d;
+            border: 2px solid #654321;
+        }
+        
+        .coop-roof {
+            position: absolute;
+            bottom: 35px;
+            width: 0;
+            height: 0;
+            border-left: 35px solid transparent;
+            border-right: 35px solid transparent;
+            border-bottom: 20px solid #8b0000;
+        }
+        
+        /* 鸡 */
+        .chicken {
+            position: absolute;
+            bottom: 35px;
+            right: 45px;
+            font-size: 14px;
+            animation: chickenPeck 2s ease-in-out infinite;
+        }
+        
+        @keyframes chickenPeck {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(20deg); }
+        }
+        
+        /* 作物 */
+        .crop {
+            position: absolute;
+            font-size: 12px;
+        }
+        
+        .crop-1 { bottom: 20px; left: 180px; }
+        .crop-2 { bottom: 25px; left: 195px; font-size: 10px; }
+        .crop-3 { bottom: 15px; left: 210px; }
+        .crop-4 { bottom: 22px; left: 225px; font-size: 11px; }
+        
+        /* 棵树 */
+        .tree {
+            position: absolute;
+            bottom: 80px;
+            left: 260px;
+        }
+        
+        .tree-trunk {
+            width: 12px;
+            height: 30px;
+            background: #8b4513;
+            margin: 0 auto;
+        }
+        
+        .tree-leaves {
+            width: 40px;
+            height: 40px;
+            background: #228b22;
+            border-radius: 50%;
+            margin-bottom: -10px;
+            position: relative;
+        }
+        
+        .tree-leaves::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: #32cd32;
+            border-radius: 50%;
+        }
+        
+        /* 花朵 */
+        .flowers {
+            position: absolute;
+            bottom: 10px;
+            left: 150px;
+            font-size: 10px;
+        }
+        
+        /* 像素小人 - 星露谷农民风格 */
         .character {
             position: absolute;
-            width: 32px;
-            height: 48px;
-            transition: all 0.5s ease;
+            width: 24px;
+            height: 36px;
+            transition: all 0.8s ease;
             z-index: 10;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
         }
         
         .character-body {
@@ -184,10 +426,34 @@
             height: 100%;
         }
         
+        /* 草帽 */
+        .hat {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 22px;
+            height: 10px;
+            background: #daa520;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .hat::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 6px;
+            background: #daa520;
+            border-radius: 3px;
+        }
+        
         /* 头 */
         .head {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             background: #ffd5b5;
             border-radius: 4px;
             position: absolute;
@@ -199,30 +465,53 @@
         /* 眼睛 */
         .eyes {
             position: absolute;
-            top: 6px;
+            top: 5px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 6px;
+            gap: 5px;
         }
         
         .eye {
-            width: 4px;
-            height: 4px;
+            width: 3px;
+            height: 3px;
             background: #333;
             border-radius: 50%;
         }
         
-        /* 身体 */
+        /* 身体 - 蓝色衬衫 */
         .body {
-            width: 24px;
-            height: 20px;
-            background: var(--accent);
-            border-radius: 4px 4px 0 0;
+            width: 18px;
+            height: 14px;
+            background: #4a90d9;
+            border-radius: 2px;
             position: absolute;
-            top: 18px;
+            top: 14px;
             left: 50%;
             transform: translateX(-50%);
+        }
+        
+        /* 背带裤 */
+        .overalls {
+            position: absolute;
+            top: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 12px;
+            background: #1e90ff;
+            border-radius: 0 0 4px 4px;
+        }
+        
+        .overalls::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: #1e90ff;
         }
         
         /* 腿 */
@@ -236,61 +525,62 @@
         }
         
         .leg {
-            width: 8px;
-            height: 12px;
-            background: #333;
-            border-radius: 0 0 4px 4px;
+            width: 6px;
+            height: 6px;
+            background: #4a3728;
+            border-radius: 0 0 2px 2px;
         }
         
         /* 状态位置 */
-        .character.at-desk {
-            bottom: 100px;
-            left: calc(50% - 16px);
-            animation: typing 0.5s infinite alternate;
+        .character.at-work {
+            bottom: 85px;
+            left: 80px;
         }
         
-        .character.at-breakroom {
-            bottom: 35px;
-            right: 25px;
-            animation: idle 1s infinite alternate;
+        .character.at-farm {
+            bottom: 25px;
+            left: 200px;
         }
         
-        .character.at-window {
-            top: 50px;
-            left: 40px;
-            animation: looking 2s infinite;
+        .character.at-rest {
+            bottom: 15px;
+            right: 100px;
         }
         
-        .character.at-bookshelf {
-            top: 80px;
-            right: 30px;
-            animation: reading 1.5s infinite alternate;
+        .character.at-tree {
+            bottom: 90px;
+            left: 265px;
         }
         
-        @keyframes typing {
-            from { transform: translateY(0); }
-            to { transform: translateY(-3px); }
+        .character.at-coop {
+            bottom: 75px;
+            right: 50px;
         }
         
-        @keyframes idle {
-            from { transform: scale(1); }
-            to { transform: scale(1.05); }
+        /* 工作动画 */
+        .character.at-work {
+            animation: working 0.8s ease-in-out infinite;
         }
         
-        @keyframes looking {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(10px); }
+        @keyframes working {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
         }
         
-        @keyframes reading {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(5deg); }
+        /* 休息动画 */
+        .character.at-rest {
+            animation: resting 2s ease-in-out infinite;
         }
         
-        /* 眨眼动画 */
+        @keyframes resting {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* 眨眼 */
         .character.blink .eye {
             height: 1px;
-            margin-top: 1.5px;
+            margin-top: 1px;
         }
         
         /* 气泡 */
@@ -298,58 +588,47 @@
             position: absolute;
             background: #fff;
             color: #333;
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
             white-space: nowrap;
             opacity: 0;
             transition: opacity 0.3s;
             z-index: 20;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
         
         .bubble::after {
             content: '';
             position: absolute;
-            bottom: -6px;
+            bottom: -5px;
             left: 50%;
             transform: translateX(-50%);
-            border-left: 6px solid transparent;
-            border-right: 6px solid transparent;
-            border-top: 6px solid #fff;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #fff;
         }
         
-        .character.has-bubble .bubble {
-            opacity: 1;
+        .character.has-bubble .bubble { opacity: 1; }
+        
+        .character.at-work .bubble {
+            bottom: 45px;
+            left: -20px;
         }
         
-        .character.at-desk .bubble {
-            bottom: 55px;
-            left: 50%;
-            transform: translateX(-50%);
+        .character.at-farm .bubble {
+            bottom: 35px;
+            left: -30px;
         }
         
-        .character.at-desk .bubble::after {
-            bottom: -6px;
+        .character.at-rest .bubble {
+            bottom: 45px;
+            right: -10px;
         }
         
-        .character.at-breakroom .bubble {
-            bottom: 55px;
-            right: 0;
-        }
-        
-        .character.at-breakroom .bubble::after {
-            right: 15px;
+        .character.at-rest .bubble::after {
             left: auto;
-            transform: none;
-        }
-        
-        .character.at-window .bubble {
-            top: -30px;
-            left: 0;
-        }
-        
-        .character.at-window .bubble::after {
-            display: none;
+            right: 15px;
         }
         
         /* 状态标签 */
@@ -357,9 +636,8 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            margin-top: 1rem;
+            margin-top: 0.75rem;
             font-size: 0.8rem;
-            color: var(--text-muted);
         }
         
         .status-dot {
@@ -384,10 +662,7 @@
             margin-bottom: 0.5rem;
         }
         
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-        }
+        .subtitle { color: var(--text-muted); font-size: 1.1rem; }
         
         .tagline {
             margin-top: 1rem;
@@ -399,10 +674,9 @@
             color: var(--accent);
         }
         
-        /* 统计卡片 */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             gap: 1rem;
             margin-top: 1.5rem;
         }
@@ -423,11 +697,10 @@
         
         .stat-label {
             color: var(--text-muted);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             margin-top: 0.25rem;
         }
         
-        /* 导航 */
         nav {
             display: flex;
             gap: 1rem;
@@ -450,7 +723,6 @@
             color: var(--accent);
         }
         
-        /* 内容区块 */
         .section {
             display: none;
             animation: fadeIn 0.3s ease;
@@ -496,23 +768,75 @@
 </head>
 <body>
     <div class="container">
-        <!-- 顶部：像素办公室 + 信息 -->
+        <!-- 顶部：像素场景 + 信息 -->
         <div class="top-section">
-            <!-- 像素办公室 -->
+            <!-- 星露谷风格场景 -->
             <div class="office-container">
                 <div class="office-title">
-                    <span>🥟 小肉包像素办公室</span>
+                    <span>🥾 星露谷小农场</span>
                     <span class="status-dot online" id="status-dot"></span>
                 </div>
                 <div class="office">
-                    <div class="window"></div>
-                    <div class="bookshelf"></div>
-                    <div class="desk"></div>
-                    <div class="breakroom"></div>
+                    <!-- 天空 -->
+                    <div class="sky">
+                        <div class="sun"></div>
+                        <div class="cloud cloud-1"></div>
+                        <div class="cloud cloud-2"></div>
+                    </div>
                     
-                    <!-- 像素小人 -->
-                    <div class="character at-desk" id="character">
+                    <!-- 远景山 -->
+                    <div class="mountain mountain-1"></div>
+                    <div class="mountain mountain-2"></div>
+                    <div class="mountain mountain-3"></div>
+                    <div class="mountain mountain-4"></div>
+                    
+                    <!-- 地面 -->
+                    <div class="ground"></div>
+                    <div class="grass-texture"></div>
+                    
+                    <!-- 小路 -->
+                    <div class="path"></div>
+                    
+                    <!-- 房子 -->
+                    <div class="house">
+                        <div class="house-roof"></div>
+                        <div class="chimney">
+                            <div class="smoke"></div>
+                            <div class="smoke"></div>
+                            <div class="smoke"></div>
+                        </div>
+                        <div class="house-wall">
+                            <div class="window"></div>
+                        </div>
+                        <div class="door"></div>
+                    </div>
+                    
+                    <!-- 鸡窝 -->
+                    <div class="chicken-coop">
+                        <div class="coop-roof"></div>
+                        <div class="coop-wall"></div>
+                    </div>
+                    <div class="chicken">🐔</div>
+                    
+                    <!-- 作物 -->
+                    <div class="crop crop-1">🥕</div>
+                    <div class="crop crop-2">🌽</div>
+                    <div class="crop crop-3">🥬</div>
+                    <div class="crop crop-4">🍅</div>
+                    
+                    <!-- 树 -->
+                    <div class="tree">
+                        <div class="tree-leaves"></div>
+                        <div class="tree-trunk"></div>
+                    </div>
+                    
+                    <!-- 花 -->
+                    <div class="flowers">🌸🌼🌷</div>
+                    
+                    <!-- 像素小人 - 农民 -->
+                    <div class="character at-work" id="character">
                         <div class="character-body">
+                            <div class="hat"></div>
                             <div class="head">
                                 <div class="eyes">
                                     <div class="eye"></div>
@@ -520,6 +844,7 @@
                                 </div>
                             </div>
                             <div class="body"></div>
+                            <div class="overalls"></div>
                             <div class="legs">
                                 <div class="leg"></div>
                                 <div class="leg"></div>
@@ -528,10 +853,11 @@
                         <div class="bubble" id="bubble">工作中...</div>
                     </div>
                 </div>
+                
                 <div class="status-area">
-                    <span>状态:</span>
+                    <span style="color: var(--text-muted);">状态:</span>
                     <span id="status-text" style="color: var(--success);">工作中</span>
-                    <span style="margin-left: auto; font-size: 0.75rem;">🕐 <span id="update-time">-</span></span>
+                    <span style="margin-left: auto; font-size: 0.75rem; color: var(--text-muted);">🕐 <span id="update-time">-</span></span>
                 </div>
             </div>
             
@@ -654,16 +980,16 @@
     </div>
     
     <script>
-        // 状态映射
+        // 状态映射 - 星露谷风格位置
         const STATUS_MAP = {
-            'idle': { area: 'at-breakroom', text: '休息中...', bubble: '让我想想有啥可以做的~' },
-            'researching': { area: 'at-desk', text: '研究中...', bubble: '🔍 搜索资料中...' },
-            'writing': { area: 'at-desk', text: '写作中...', bubble: '✍️ 写报告中...' },
-            'executing': { area: 'at-desk', text: '执行中...', bubble: '⚡ 干活中...' },
-            'error': { area: 'at-window', text: '遇到问题', bubble: '😵 遇到点问题...' }
+            'idle': { area: 'at-rest', text: '休息中', bubble: '🌙 欣赏星空...' },
+            'researching': { area: 'at-farm', text: '耕作中', bubble: '🔍 查找资料中...' },
+            'writing': { area: 'at-work', text: '农舍工作中', bubble: '✍️ 写报告中...' },
+            'executing': { area: 'at-work', text: '忙碌中', bubble: '⚡ 干活中...' },
+            'error': { area: 'at-tree', text: '遇到问题', bubble: '😵 需要帮助...' }
         };
         
-        const DEFAULT_STATUS = { area: 'at-desk', text: '工作中', bubble: '随时待命！' };
+        const DEFAULT_STATUS = { area: 'at-work', text: '工作中', bubble: '随时待命！' };
         
         // 导航
         document.querySelectorAll('.nav-link').forEach(link => {
@@ -687,29 +1013,30 @@
         // 随机眨眼
         function randomBlink() {
             const char = document.getElementById('character');
-            char.classList.add('blink');
-            setTimeout(() => char.classList.remove('blink'), 150);
+            if (char) {
+                char.classList.add('blink');
+                setTimeout(() => char.classList.remove('blink'), 150);
+            }
             setTimeout(randomBlink, 3000 + Math.random() * 5000);
         }
         randomBlink();
         
         // 随机气泡
-        const BUBBLES = ['有问题随时问我！', '🤔 思考中...', '💡 有新想法！', '等待指令中...'];
+        const BUBBLES = ['有问题随时问我！', '🤔 思考中...', '💡 有新想法！', '等待指令中...', '🌾 享受田园生活~'];
         function randomBubble() {
             const bubble = document.getElementById('bubble');
-            if (!bubble) return;
-            if (Math.random() > 0.5) {
+            const char = document.getElementById('character');
+            if (!bubble || !char) return;
+            if (Math.random() > 0.6) {
                 bubble.textContent = BUBBLES[Math.floor(Math.random() * BUBBLES.length)];
-                document.getElementById('character').classList.add('has-bubble');
-                setTimeout(() => {
-                    document.getElementById('character').classList.remove('has-bubble');
-                }, 3000);
+                char.classList.add('has-bubble');
+                setTimeout(() => char.classList.remove('has-bubble'), 3000);
             }
-            setTimeout(randomBubble, 8000 + Math.random() * 10000);
+            setTimeout(randomBubble, 6000 + Math.random() * 10000);
         }
         setTimeout(randomBubble, 5000);
         
-        // 获取状态 (由于跨域，演示模式使用默认状态)
+        // 更新状态
         async function updateStatus() {
             try {
                 const res = await fetch('http://127.0.0.1:18792/api/status', { 
@@ -725,7 +1052,7 @@
                 // 更新位置
                 char.className = 'character ' + status.area;
                 
-                // 更新状态显示
+                // 更新显示
                 document.getElementById('status-text').textContent = status.text;
                 document.getElementById('bubble').textContent = status.bubble;
                 document.getElementById('model-name').textContent = data.model || '-';
@@ -735,16 +1062,11 @@
                 
                 // 状态颜色
                 const dot = document.getElementById('status-dot');
-                if (data.status === 'idle') {
-                    dot.className = 'status-dot online';
-                } else if (data.status === 'error') {
-                    dot.className = 'status-dot error';
-                } else {
-                    dot.className = 'status-dot busy';
-                }
+                if (data.status === 'idle') dot.className = 'status-dot online';
+                else if (data.status === 'error') dot.className = 'status-dot error';
+                else dot.className = 'status-dot busy';
                 
             } catch (e) {
-                // API 不可用时使用演示模式
                 console.log('Running in demo mode');
             }
         }

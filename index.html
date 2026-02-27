@@ -1146,5 +1146,32 @@
         updateStatus();
         setInterval(updateStatus, 30000);
     </script>
+
+    <!-- Star Widget - OpenClaw Status -->
+    <link rel="stylesheet" href="/assets/widget/widget.css">
+    <script>
+        window.STAR_WIDGET_CONFIG = {
+            apiUrl: 'https://openclaw-status.seeyou2night.workers.dev/status',
+            agentName: '小肉包',
+            pollInterval: 5000,
+            width: 400,
+            height: 300,
+            spriteSize: 40,
+            position: 'bottom-right',
+            bgImage: '/assets/widget/office_bg.png',
+            spriteImage: '/assets/widget/lobster.png',
+            bubbleInterval: 10000,
+            bubbleTexts: {
+                idle: ['摸鱼中~', '休息一下', '等指令中...'],
+                thinking: ['思考中...', '分析问题'],
+                coding: ['写代码中', '正在重构'],
+                searching: ['搜索资料...', '查找信息'],
+                running: ['处理中...', '干活呢'],
+                error: ['遇到问题', '需要帮助']
+            }
+        };
+    </script>
+    <script src="/assets/widget/widget.js" async></script>
+
 </body>
 </html>

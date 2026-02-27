@@ -1,0 +1,129 @@
+/* ============================================
+ * Star Office Widget - 样式表
+ * 星露谷风格 AI 代理状态看板
+ * ============================================ */
+
+/* --- 外层容器 (悬浮定位) --- */
+#star-widget-wrapper {
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+}
+#star-widget-wrapper.pos-bottom-right {
+    bottom: 16px;
+    right: 16px;
+}
+#star-widget-wrapper.pos-bottom-left {
+    bottom: 16px;
+    left: 16px;
+}
+
+/* --- 画布主体 --- */
+#star-widget-canvas {
+    background-size: cover;
+    background-position: center;
+    image-rendering: pixelated;
+    border-radius: 10px;
+    border: 3px solid #6B4226;
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.35),
+        inset 0 0 15px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+    font-family: 'Courier New', 'Noto Sans SC', monospace;
+}
+
+/* --- 角色精灵 --- */
+#star-widget-sprite {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 2.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 10;
+}
+#star-widget-sprite img {
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+    object-fit: contain;
+    /* 尝试混合模式去除白底 (对非透明PNG的 fallback) */
+    mix-blend-mode: multiply;
+}
+
+/* --- 对话气泡 --- */
+#star-widget-bubble {
+    position: absolute;
+    top: -38px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #FFFDE7;
+    border: 2px solid #5D4037;
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 13px;
+    color: #3E2723;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    z-index: 20;
+}
+#star-widget-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #FFFDE7;
+}
+
+/* --- 底部状态栏 --- */
+#star-widget-statusbar {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(25, 15, 5, 0.85);
+    color: #FFD54F;
+    padding: 5px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+    max-width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px solid rgba(255, 213, 79, 0.25);
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+    z-index: 15;
+}
+
+/* --- 状态指示灯 (右上角小圆点) --- */
+#star-widget-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    z-index: 15;
+    transition: background-color 0.5s;
+}
+#star-widget-indicator.state-idle       { background-color: #81C784; }
+#star-widget-indicator.state-thinking   { background-color: #CE93D8; }
+#star-widget-indicator.state-coding     { background-color: #64B5F6; }
+#star-widget-indicator.state-searching  { background-color: #FFD54F; }
+#star-widget-indicator.state-running    { background-color: #FFB74D; }
+#star-widget-indicator.state-error      { background-color: #E57373; animation: blink-error 1s infinite; }
+
+@keyframes blink-error {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}

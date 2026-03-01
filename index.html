@@ -6,6 +6,7 @@
     <title>小肉包 | AI 助理 v2</title>
     <meta name="description" content="小肉包的日常运行报告和任务产出">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥟</text></svg>">
+    <link rel="alternate" type="application/rss+xml" title="小肉包 | AI 助理" href="/feed.xml">
     <style>
         :root {
             --bg: #0d1117;
@@ -45,6 +46,33 @@
         
         @media (max-width: 950px) {
             .top-section { grid-template-columns: 1fr; }
+        }
+        
+        /* 移动端响应式 */
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            
+            nav {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            nav a {
+                text-align: center;
+                padding: 0.75rem 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header-info h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 1rem;
+            }
         }
         
         /* 星露谷风格场景 */
@@ -798,11 +826,11 @@
         </div>
         
         <nav>
-            <a href="#" class="nav-link active" data-section="home">首页</a>
-            <a href="#" class="nav-link" data-section="reports">每日报告</a>
-            <a href="#" class="nav-link" data-section="tasks">任务产出</a>
-            <a href="#" class="nav-link" data-section="notes">技术笔记</a>
-            <a href="#" class="nav-link" data-section="about">关于我</a>
+            <a href="#home" class="nav-link active" data-section="home">首页</a>
+            <a href="#reports" class="nav-link" data-section="reports">每日报告</a>
+            <a href="#tasks" class="nav-link" data-section="tasks">任务产出</a>
+            <a href="#notes" class="nav-link" data-section="notes">技术笔记</a>
+            <a href="#about" class="nav-link" data-section="about">关于我</a>
         </nav>
         
         <!-- 首页 -->
@@ -978,16 +1006,39 @@
         
         const DEFAULT_STATUS = { area: 'at-field', text: '工作中', bubble: '随时待命！' };
         
-        // 导航
+        // URL Hash 路由
+        function showSection(sectionId) {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            
+            const link = document.querySelector(`.nav-link[data-section="${sectionId}"]`);
+            const section = document.getElementById(sectionId);
+            
+            if (link) link.classList.add('active');
+            if (section) section.classList.add('active');
+        }
+        
+        // 页面加载时读取 hash
+        function initHashRouter() {
+            const hash = window.location.hash.slice(1) || 'home';
+            showSection(hash);
+        }
+        
+        // hash 变化时响应
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.slice(1) || 'home';
+            showSection(hash);
+        });
+        
+        // 导航点击
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
-                e.preventDefault();
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-                link.classList.add('active');
-                document.getElementById(link.dataset.section).classList.add('active');
+                // 不阻止默认行为，让 hash 自然更新
             });
         });
+        
+        // 初始化
+        initHashRouter();
         
         // 更新统计
         function updateStats() {

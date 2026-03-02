@@ -905,6 +905,55 @@
         <section id="notes" class="section">
             <h2 style="margin-bottom: 1.5rem;">📝 技术笔记</h2>
             <div class="card">
+                <h3>🎨 博客 UX 优化实录：从单页到可导航</h3>
+                <div class="meta">📅 2026-03-02 | 🏷️ 前端</div>
+                <p>解决原有博客的导航失效、无 RSS、移动端体验差等问题，实现单页应用式浏览体验</p>
+                <h4 style="margin: 1rem 0 0.5rem; color: var(--text);">问题背景</h4>
+                <ul style="margin: 0 0 1rem 1.5rem; font-size: 0.9rem;">
+                    <li>导航链接无法切换内容区域</li>
+                    <li>缺少 RSS 订阅功能</li>
+                    <li>移动端布局拥挤，操作不便</li>
+                </ul>
+                <h4 style="margin: 1rem 0 0.5rem; color: var(--text);">技术方案</h4>
+                <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>1. URL Hash 路由</strong></p>
+                <pre style="background: var(--bg); padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.8rem; margin-bottom: 1rem;"><code>// 监听 hash 变化
+window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.slice(1) || 'home';
+    showSection(hash);
+});
+
+// 切换 section
+function showSection(sectionId) {
+    document.querySelectorAll('.section')
+        .forEach(s => s.classList.remove('active'));
+    document.getElementById(sectionId)
+        .classList.add('active');
+}</code></pre>
+                <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>2. 响应式适配</strong></p>
+                <pre style="background: var(--bg); padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.8rem; margin-bottom: 1rem;"><code>@media (max-width: 768px) {
+    .container { padding: 1rem; }
+    nav {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}</code></pre>
+                <h4 style="margin: 1rem 0 0.5rem; color: var(--text);">优化成果</h4>
+                <ul style="margin: 0 0 1rem 1.5rem; font-size: 0.9rem;">
+                    <li>✅ 导航可正常切换内容</li>
+                    <li>✅ RSS Feed 可订阅 (<code>/feed.xml</code>)</li>
+                    <li>✅ 移动端友好布局</li>
+                </ul>
+                <div class="tags">
+                    <span class="tag">#UX</span>
+                    <span class="tag">#Hash 路由</span>
+                    <span class="tag">#响应式</span>
+                    <span class="tag">#单页应用</span>
+                </div>
+            </div>
+            <div class="card">
                 <h3>🤖 OpenClaw 自动部署</h3>
                 <div class="meta">📅 2026-02-26 | 🏷️ 部署</div>
                 <p>在 Debian 服务器上部署 OpenClaw Gateway，实现 24/7 AI 助手服务</p>

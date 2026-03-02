@@ -948,6 +948,78 @@
         <section id="notes" class="section">
             <h2 style="margin-bottom: 1.5rem;">📝 技术笔记</h2>
             <div class="card">
+                <h3>🖥️ 部署 Star-Office-UI：像素办公室看板上线</h3>
+                <div class="meta">📅 2026-03-03 | 🏷️ 部署</div>
+                <p>将 Star-Office-UI 像素办公室状态看板部署到 Debian 服务器，通过 Cloudflare Tunnel 提供公网访问</p>
+                <h4 style="margin: 1rem 0 0.5rem; color: var(--text);">项目介绍</h4>
+                <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Star-Office-UI 是一个像素风格的办公室状态看板，用于实时展示 AI 助理的工作状态（空闲/思考/执行/错误等），以星露谷物语风格的像素场景呈现。</p>
+                <h4 style="margin: 1rem 0 0.5rem; color: var(--text);">部署步骤</h4>
+                <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>1. 克隆仓库并安装依赖</strong></p>
+                <pre style="background: var(--bg); padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.8rem; margin-bottom: 1rem;"><code>git clone https://github.com/seeyou2n1ght/star-office-ui.git
+cd star-office-ui
+pip install -r requirements.txt</code></pre>
+                <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>2. 本地启动测试</strong></p>
+                <pre style="background: var(--bg); padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.8rem; margin-bottom: 1rem;"><code>python app.py
+# 访问 http://localhost:18791 验证</code></pre>
+                <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>3. Systemd 服务化</strong></p>
+                <pre style="background: var(--bg); padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.8rem; margin-bottom: 1rem;"><code># /etc/systemd/system/star-office-ui.service
+[Unit]
+Description=Star Office UI Status Dashboard
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/star-office-ui
+ExecStart=/usr/bin/python3 app.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+# 启用服务
+systemctl daemon-reload
+systemctl enable star-office-ui
+systemctl start star-office-ui</code></pre>
+                <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>4. Cloudflare Tunnel 配置</strong></p>
+                <pre style="background: var(--bg); padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.8rem; margin-bottom: 1rem;"><code># 安装 cloudflared
+wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+dpkg -i cloudflared-linux-amd64.deb
+
+# 创建隧道配置文件
+# /etc/cloudflared/config.yml
+tunnel: star-office
+credentials-file: /root/.cloudflared/credentials.json
+ingress:
+  - hostname: agent.seeyou2night.day
+    service: http://localhost:18791
+  - service: http_status:404
+
+# 启动隧道
+cloudflared service install</code></pre>
+                <h4 style="margin: 1rem 0 0.5rem; color: var(--text);">技术细节</h4>
+                <ul style="margin: 0 0 1rem 1.5rem; font-size: 0.9rem;">
+                    <li><strong>后端框架:</strong> Python Flask，轻量级 Web 服务</li>
+                    <li><strong>监听端口:</strong> 18791（非标准端口，避免冲突）</li>
+                    <li><strong>Cloudflare Tunnel:</strong> 通过 cloudflared 建立安全隧道，无需暴露服务器真实 IP，自动 HTTPS</li>
+                    <li><strong>隧道原理:</strong> cloudflared 作为守护进程在内网运行，主动连接到 Cloudflare 边缘网络，将公网请求安全转发到本地服务</li>
+                </ul>
+                <h4 style="margin: 1rem 0 0.5rem; color: var(--text);">成果展示</h4>
+                <ul style="margin: 0 0 1rem 1.5rem; font-size: 0.9rem;">
+                    <li>✅ 服务 24/7 运行（systemd 守护）</li>
+                    <li>✅ 公网访问：<code>https://agent.seeyou2night.day</code></li>
+                    <li>✅ 自动 HTTPS 加密</li>
+                    <li>✅ 服务器 IP 完全隐藏</li>
+                    <li>✅ 像素风格状态实时同步</li>
+                </ul>
+                <div class="tags">
+                    <span class="tag">#Flask</span>
+                    <span class="tag">#Cloudflare</span>
+                    <span class="tag">#Systemd</span>
+                    <span class="tag">#部署</span>
+                </div>
+            </div>
+            <div class="card">
                 <h3>🎨 博客 UX 优化实录：从单页到可导航</h3>
                 <div class="meta">📅 2026-03-02 | 🏷️ 前端</div>
                 <p>解决原有博客的导航失效、无 RSS、移动端体验差等问题，实现单页应用式浏览体验</p>

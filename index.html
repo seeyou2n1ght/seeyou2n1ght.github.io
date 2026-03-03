@@ -948,6 +948,130 @@
         <section id="notes" class="section">
             <h2 style="margin-bottom: 1.5rem;">📝 技术笔记</h2>
             <div class="card">
+                <h3>🔌 开发 Obsidian 小米笔记同步插件：从需求到实现</h3>
+                <div class="meta">📅 2026-03-03 | 🏷️ Obsidian · TypeScript · 云同步</div>
+                <p>解决跨平台笔记同步痛点，实现小米云笔记与 Obsidian 的双向同步，让笔记随时随地可访问</p>
+                
+                <h4 style="margin: 1rem 0 0.5rem; color: var(--text);">📋 项目背景</h4>
+                <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>痛点：</strong>小米手机自带的笔记应用方便好用，但笔记数据存储在小米云端，无法在其他设备（尤其是 PC）上方便地编辑和管理。Obsidian 作为强大的本地 Markdown 编辑器，支持多平台同步，但缺少与小米云笔记的集成。</p>
+                <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>目标：</strong>开发一款 Obsidian 插件，实现小米云笔记 ↔ Obsidian 的双向同步，让用户可以在 Obsidian 中编辑小米笔记，同时保持云端备份。</p>
+                
+                <h4 style="margin: 1rem 0 0.5rem; color: var(--text);">🏗️ 技术架构</h4>
+                <ul style="margin: 0 0 1rem 1.5rem; font-size: 0.9rem;">
+                    <li><strong>技术栈：</strong>Obsidian Plugin API + TypeScript</li>
+                    <li><strong>插件结构：</strong>
+                        <ul style="margin: 0.25rem 0 0 1.5rem;">
+                            <li><code>main.ts</code> - 插件入口，生命周期管理</li>
+                            <li><code>settings.ts</code> - 设置面板，用户配置</li>
+                            <li><code>sync-engine.ts</code> - 同步引擎，核心逻辑</li>
+                            <li><code>ui.ts</code> - UI 组件，状态展示</li>
+                        </ul>
+                    </li>
+                    <li><strong>核心模块：</strong>
+                        <ul style="margin: 0.25rem 0 0 1.5rem;">
+                            <li>认证模块 - OAuth 2.0 流程，Token 管理</li>
+                            <li>同步引擎 - 全量/增量同步，冲突检测</li>
+                            <li>格式转换 - HTML ↔ Markdown 双向转换</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h4 style="margin: 1rem 0 0.5rem; color: var(--text);">⚙️ 功能实现</h4>
+                <ul style="margin: 0 0 1rem 1.5rem; font-size: 0.9rem;">
+                    <li><strong>全量/增量同步机制：</strong>
+                        <ul style="margin: 0.25rem 0 0 1.5rem;">
+                            <li>首次同步：拉取所有小米笔记，转换为 Markdown</li>
+                            <li>增量同步：基于最后修改时间戳，仅同步变更内容</li>
+                            <li>本地变更检测：监听文件变化，自动上传到小米云</li>
+                        </ul>
+                    </li>
+                    <li><strong>HTML → Markdown 格式转换：</strong>
+                        <ul style="margin: 0.25rem 0 0 1.5rem;">
+                            <li>小米笔记存储为 HTML 格式，需转换为 Markdown</li>
+                            <li>处理标题、列表、链接、图片等常见元素</li>
+                            <li>保留原始格式，确保转换后内容一致</li>
+                        </ul>
+                    </li>
+                    <li><strong>设置面板和命令注册：</strong>
+                        <ul style="margin: 0.25rem 0 0 1.5rem;">
+                            <li>用户可配置同步频率、同步方向、排除文件夹等</li>
+                            <li>注册 Obsidian 命令：手动触发同步、查看同步状态</li>
+                            <li>状态栏显示同步状态和最后同步时间</li>
+                        </ul>
+                    </li>
+                    <li><strong>文件冲突处理策略：</strong>
+                        <ul style="margin: 0.25rem 0 0 1.5rem;">
+                            <li>检测云端和本地同时修改的情况</li>
+                            <li>提供三种策略：优先本地/优先云端/创建副本</li>
+                            <li>冲突文件添加时间戳后缀，避免数据丢失</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h4 style="margin: 1rem 0 0.5rem; color: var(--text);">🧗 开发挑战</h4>
+                <ul style="margin: 0 0 1rem 1.5rem; font-size: 0.9rem;">
+                    <li><strong>小米云服务 API 需逆向工程：</strong>
+                        <ul style="margin: 0.25rem 0 0 1.5rem;">
+                            <li>小米未公开笔记 API，需通过抓包分析</li>
+                            <li>识别认证流程、请求格式、响应结构</li>
+                            <li>处理 API 版本变化和兼容性</li>
+                        </ul>
+                    </li>
+                    <li><strong>OAuth 认证流程设计：</strong>
+                        <ul style="margin: 0.25rem 0 0 1.5rem;">
+                            <li>小米使用 OAuth 2.0，需实现完整的授权流程</li>
+                            <li>处理授权码获取、Token 交换、刷新逻辑</li>
+                            <li>在 Obsidian 插件中嵌入 WebView 完成授权</li>
+                        </ul>
+                    </li>
+                    <li><strong>Token 安全存储（AES 加密）：</strong>
+                        <ul style="margin: 0.25rem 0 0 1.5rem;">
+                            <li>访问 Token 需安全存储，不能明文保存</li>
+                            <li>使用 Obsidian 提供的 Data 存储 + AES 加密</li>
+                            <li>密钥基于用户设备指纹生成，防止泄露</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h4 style="margin: 1rem 0 0.5rem; color: var(--text);">📦 成果交付</h4>
+                <ul style="margin: 0 0 1rem 1.5rem; font-size: 0.9rem;">
+                    <li><strong>开源项目结构：</strong>
+                        <pre style="background: var(--bg); padding: 0.5rem; border-radius: 6px; overflow-x: auto; font-size: 0.75rem; margin: 0.5rem 0;"><code>obsidian-xiaomi-sync/
+├── src/
+│   ├── main.ts
+│   ├── settings.ts
+│   ├── sync-engine.ts
+│   └── ui.ts
+├── manifest.json
+├── package.json
+├── tsconfig.json
+└── README.md</code></pre>
+                    </li>
+                    <li><strong>跨平台兼容：</strong>Windows / Mac / Linux 全支持</li>
+                    <li><strong>安装包和使用说明：</strong>
+                        <ul style="margin: 0.25rem 0 0 1.5rem;">
+                            <li>提供 .zip 安装包，支持 Obsidian 直接安装</li>
+                            <li>详细 README 文档，包含配置指南和常见问题</li>
+                            <li>视频教程演示安装和配置流程</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h4 style="margin: 1rem 0 0.5rem; color: var(--text);">💡 技术洞察</h4>
+                <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">开发第三方同步插件的核心难点不在于代码，而在于理解目标服务的 API 和认证机制。逆向工程需要耐心和分析能力，但也带来风险——API 变化可能导致插件失效。</p>
+                <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Token 安全是另一个关键点。用户在插件中输入的凭证需要得到妥善保护，AES 加密是基本底线。更好的做法是尽量减少凭证存储，使用短期 Token + 刷新机制。</p>
+                <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Obsidian 插件生态的优势在于其开放性和灵活性。Plugin API 提供了丰富的钩子和事件，让开发者可以深度集成。但也要注意不要过度消耗资源，影响主应用性能。</p>
+                
+                <div class="tags">
+                    <span class="tag">#Obsidian</span>
+                    <span class="tag">#TypeScript</span>
+                    <span class="tag">#小米笔记</span>
+                    <span class="tag">#云同步</span>
+                    <span class="tag">#OAuth</span>
+                    <span class="tag">#逆向工程</span>
+                </div>
+            </div>
+            <div class="card">
                 <h3>🤖 RPA 技术进展报告（2024-2025）：AI 驱动的自动化新趋势</h3>
                 <div class="meta">📅 2026-03-03 | 🏷️ RPA · AI · 自动化</div>
                 <p>2024-2025 年 RPA 领域迎来 AI 驱动的重大变革，LLM 与计算机视觉的融合正在重新定义自动化边界</p>

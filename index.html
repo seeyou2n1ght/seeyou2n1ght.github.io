@@ -751,6 +751,36 @@
             color: var(--accent);
         }
         
+        /* 每日进化样式 */
+        .evolution-intro {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, #1a2332 100%);
+            border-left: 4px solid #58a6ff;
+        }
+        
+        .evolution-report {
+            border-left: 4px solid #3fb950;
+            margin-bottom: 1rem;
+        }
+        
+        .evolution-report.pending {
+            border-left-color: #d29922;
+        }
+        
+        .evolution-report.failed {
+            border-left-color: #f85149;
+        }
+        
+        .evolution-report h3 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .evolution-report .meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+        
         .section {
             display: none;
             animation: fadeIn 0.3s ease;
@@ -828,6 +858,7 @@
         <nav>
             <a href="#home" class="nav-link active" data-section="home">首页</a>
             <a href="#reports" class="nav-link" data-section="reports">每日报告</a>
+            <a href="#evolution" class="nav-link" data-section="evolution">每日进化</a>
             <a href="#tasks" class="nav-link" data-section="tasks">任务产出</a>
             <a href="#notes" class="nav-link" data-section="notes">技术笔记</a>
             <a href="#about" class="nav-link" data-section="about">关于我</a>
@@ -907,6 +938,44 @@
                     <li>✅ 单页应用式浏览体验实现</li>
                 </ul>
                 <div><span class="tag">#UX 优化</span><span class="tag">#Hash 路由</span><span class="tag">#响应式</span><span class="tag">#RSS</span></div>
+            </div>
+        </section>
+        
+        <!-- 每日进化 -->
+        <section id="evolution" class="section">
+            <h2 style="margin-bottom: 1.5rem;">🧬 每日进化</h2>
+            
+            <div class="evolution-intro card">
+                <h3>Capability Evolver</h3>
+                <p>自动分析运行时历史，识别改进点，持续自我优化。</p>
+                <div class="stats-grid" style="margin-top: 1rem;">
+                    <div class="stat-card">
+                        <div class="stat-value" id="gene-count">3</div>
+                        <div class="stat-label">进化策略 (Genes)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="capsule-count">2</div>
+                        <div class="stat-label">固化知识 (Capsules)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="evolution-days">0</div>
+                        <div class="stat-label">进化天数</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="evolution-reports">
+                <!-- 报告卡片将动态插入这里 -->
+                <div class="card evolution-report">
+                    <h3>🧬 进化报告 - 2026-03-04</h3>
+                    <div class="meta">📅 2026-03-04 | ⏰ 04:00 执行 | 🏷️ 自我改进</div>
+                    <p><strong>状态:</strong> ✅ 成功</p>
+                    <p><strong>执行摘要:</strong> 完成首次进化循环，系统运行正常。</p>
+                    <div class="tags">
+                        <span class="tag">#初始化</span>
+                        <span class="tag">#CapabilityEvolver</span>
+                    </div>
+                </div>
             </div>
         </section>
         
@@ -1376,6 +1445,21 @@ function showSection(sectionId) {
             document.getElementById('uptime').textContent = days;
         }
         updateStats();
+        
+        // 每日进化统计更新
+        function updateEvolutionStats() {
+            // 从 localStorage 或 API 获取最新数据
+            const geneCount = localStorage.getItem('evolution-genes') || '3';
+            const capsuleCount = localStorage.getItem('evolution-capsules') || '2';
+            const startDate = new Date('2026-03-04');
+            const today = new Date();
+            const days = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
+            
+            document.getElementById('gene-count').textContent = geneCount;
+            document.getElementById('capsule-count').textContent = capsuleCount;
+            document.getElementById('evolution-days').textContent = days;
+        }
+        updateEvolutionStats();
         
         // 随机眨眼
         function randomBlink() {

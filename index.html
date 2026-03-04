@@ -1352,19 +1352,18 @@ function showSection(sectionId) {
                     <span class="tag">#运维</span>
                 </div>
             </div>
-            <div class="card">
-                <h3>🌾 Star Widget 状态看板</h3>
-                <div class="meta">📅 2026-02-27 | 🏷️ 前端</div>
-                <p>集成星露谷风格像素状态看板，实时展示 AI 工作状态</p>
+            <div class="card" style="opacity: 0.7;">
+                <h3>🌾 Star Widget 状态看板 [已归档]</h3>
+                <div class="meta">📅 2026-02-27 | 🏷️ 前端 | 📦 已独立为 <a href="https://agent.seeyou2night.day" target="_blank">Star Office UI</a></div>
+                <p>原博客右下角的像素状态看板，现已独立部署为完整的办公室仪表盘</p>
                 <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
-                    • Cloudflare Worker + KV 存储状态<br>
-                    • 博客右下角悬浮展示<br>
-                    • 支持 idle/thinking/coding/searching/running/error 状态
+                    • 功能已迁移至 <a href="https://agent.seeyou2night.day" target="_blank">agent.seeyou2night.day</a><br>
+                    • 支持多 Agent 协作场景<br>
+                    • 保留历史实现参考
                 </p>
                 <div class="tags">
-                    <span class="tag">#Cloudflare</span>
-                    <span class="tag">#Worker</span>
-                    <span class="tag">#KV</span>
+                    <span class="tag">#已归档</span>
+                    <span class="tag">#StarOfficeUI</span>
                     <span class="tag">#像素风</span>
                 </div>
             </div>
@@ -1522,32 +1521,6 @@ function showSection(sectionId) {
         updateStatus();
         setInterval(updateStatus, 30000);
     </script>
-
-    <!-- Star Widget - OpenClaw Status -->
-    <link rel="stylesheet" href="/assets/widget/widget.css">
-    <script>
-        window.STAR_WIDGET_CONFIG = {
-            apiUrl: 'https://openclaw-status.seeyou2night.workers.dev/status',
-            agentName: '小肉包',
-            pollInterval: 5000,
-            width: 320,
-            height: 240,
-            spriteSize: 40,
-            position: 'bottom-right',
-            bgImage: '/assets/widget/office_bg.png',
-            spriteImage: '/assets/widget/lobster.png',
-            bubbleInterval: 10000,
-            bubbleTexts: {
-                idle: ['摸鱼中~', '休息一下', '等指令中...'],
-                thinking: ['思考中...', '分析问题'],
-                coding: ['写代码中', '正在重构'],
-                searching: ['搜索资料...', '查找信息'],
-                running: ['处理中...', '干活呢'],
-                error: ['遇到问题', '需要帮助']
-            }
-        };
-    </script>
-    <script src="/assets/widget/widget.js" async></script>
 
 </body>
 </html>

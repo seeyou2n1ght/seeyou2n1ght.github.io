@@ -1,0 +1,27 @@
+{
+  "name": "obsidian-mi-note-sync",
+  "version": "1.0.0",
+  "description": "Sync Xiaomi Notes with Obsidian",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+    "version": "node version-bump.mjs && git add manifest.json versions.json"
+  },
+  "keywords": ["obsidian", "plugin", "xiaomi", "notes", "sync"],
+  "author": "小肉包",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^16.11.6",
+    "@typescript-eslint/eslint-plugin": "5.29.0",
+    "@typescript-eslint/parser": "5.29.0",
+    "builtin-modules": "1.1.1",
+    "esbuild": "0.12.22",
+    "obsidian": "latest",
+    "tslib": "2.4.0",
+    "typescript": "4.7.4"
+  },
+  "dependencies": {
+    "crypto-js": "^4.1.1"
+  }
+}

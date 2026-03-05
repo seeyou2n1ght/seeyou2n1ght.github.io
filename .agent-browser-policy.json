@@ -1,0 +1,26 @@
+{
+  "allowedDomains": [
+    "github.com",
+    "*.github.com",
+    "api.github.com",
+    "raw.githubusercontent.com",
+    "r.jina.ai",
+    "s.jina.ai",
+    "wttr.in",
+    "exa.ai",
+    "*.youtube.com",
+    "youtu.be",
+    "*.bilibili.com",
+    "b23.tv",
+    "mp.weixin.qq.com",
+    "*.xiaohongshu.com",
+    "xhslink.com",
+    "*.twitter.com",
+    "x.com",
+    "*.reddit.com",
+    "*.linkedin.com"
+  ],
+  "confirmActions": ["eval", "download", "upload"],
+  "maxOutput": 50000,
+  "contentBoundaries": true
+}

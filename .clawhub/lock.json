@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "skills": {
+    "capability-evolver": {
+      "version": "1.23.0",
+      "installedAt": 1772556124085
+    },
+    "self-improving-agent": {
+      "version": "1.0.11",
+      "installedAt": 1772556129452
+    },
+    "evolver": {
+      "version": "1.23.0",
+      "installedAt": 1772654409376
+    },
+    "feishu-evolver-wrapper": {
+      "version": "1.7.1",
+      "installedAt": 1772582771840
+    }
+  }
+}

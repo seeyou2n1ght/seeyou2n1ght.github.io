@@ -1,0 +1,32 @@
+{
+  "name": "obsidian-mi-note-sync-cookie",
+  "version": "2.0.0",
+  "description": "小米笔记 Obsidian 同步插件（Cookie 认证版）",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "node esbuild.config.mjs production",
+    "version": "node version-bump.mjs && git add manifest.json versions.json"
+  },
+  "keywords": [
+    "obsidian",
+    "plugin",
+    "xiaomi",
+    "notes",
+    "sync"
+  ],
+  "author": "小肉包",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
+    "@types/node": "^20.11.5",
+    "builtin-modules": "^1.1.1",
+    "esbuild": "^0.19.11",
+    "obsidian": "^1.5.7",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "crypto-js": "^4.2.0"
+  }
+}

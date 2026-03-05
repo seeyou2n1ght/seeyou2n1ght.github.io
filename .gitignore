@@ -1,0 +1,53 @@
+# OpenClaw 安全灾备 - .gitignore
+
+# 敏感配置文件（包含认证信息）
+.openclaw/
+openclaw.json
+devices/
+paired.json
+identity/
+
+# 临时文件和缓存
+*.tmp
+*.temp
+*.cache
+*.log
+*.swp
+*.swo
+*~
+
+# 大文件和二进制
+*.pdf
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.mp4
+*.mp3
+*.avi
+*.mov
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+
+# 节点模块和依赖
+node_modules/
+vendor/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 安全审计报告（可选排除，或单独仓库）
+# security-audits/
+
+# 记忆文件（可选，根据隐私需求）
+# memory/
+
+# 代理状态
+agent-state.json
+
+# 会话文件
+sessions/

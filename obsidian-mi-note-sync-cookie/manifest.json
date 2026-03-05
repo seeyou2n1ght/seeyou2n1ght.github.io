@@ -1,0 +1,11 @@
+{
+  "id": "mi-note-sync-cookie",
+  "name": "Mi Note Sync (Cookie)",
+  "version": "2.0.0",
+  "minAppVersion": "1.0.0",
+  "description": "小米笔记 Obsidian 同步插件（Cookie 认证版）",
+  "author": "小肉包",
+  "authorUrl": "https://github.com/seeyou2n1ght",
+  "fundingUrl": "",
+  "isDesktopOnly": true
+}

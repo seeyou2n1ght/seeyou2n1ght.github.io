@@ -1,0 +1,10 @@
+{
+  "id": "mi-note-sync",
+  "name": "Mi Note Sync",
+  "version": "1.0.0",
+  "minAppVersion": "0.15.0",
+  "description": "Sync Xiaomi Notes with Obsidian. Support bidirectional sync, auto refresh, and markdown conversion.",
+  "author": "小肉包",
+  "authorUrl": "https://github.com/seeyou2n1ght",
+  "isDesktopOnly": false
+}

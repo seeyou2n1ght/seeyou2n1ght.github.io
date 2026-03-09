@@ -92,4 +92,36 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 
 ---
 
+## Google Workspace (gws)
+
+Full access to Google Drive, Gmail, Calendar, Sheets, Docs via official CLI.
+
+### Installation
+```bash
+npm install -g @googleworkspace/cli
+```
+
+### Authentication Required
+Before first use, authenticate with Google:
+```bash
+gws auth login --scopes drive,gmail,calendar,sheets,docs
+```
+
+### Quick Reference
+
+| Service | Command Example |
+|:---|:---|
+| Drive List | `gws drive files list --params '{"pageSize": 10}'` |
+| Drive Upload | `gws drive files create --upload ./file.pdf` |
+| Gmail Read | `gws gmail users messages list` |
+| Calendar | `gws calendar events list` |
+| Sheets | `gws sheets spreadsheets values get --params '{"range": "A1:D10"}'` |
+
+### Security
+- Credentials: AES-256-GCM encrypted
+- Storage: OS keyring (keychain/secret service)
+- Scope: Minimal permission per use case
+
+---
+
 Add whatever helps you do your job. This is your cheat sheet.

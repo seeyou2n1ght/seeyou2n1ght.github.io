@@ -1,0 +1,8 @@
+{
+  "id": "gws-google-workspace",
+  "name": "Google Workspace CLI",
+  "version": "1.0.0",
+  "description": "Integration with Google Drive, Gmail, Calendar, Sheets, Docs via gws CLI",
+  "author": "小肉包",
+  "tags": ["google", "drive", "gmail", "calendar", "productivity"]
+}

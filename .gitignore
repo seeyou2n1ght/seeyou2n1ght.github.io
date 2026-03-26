@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.env
+.venv
+*.egg-info/
+dist/
+build/
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Database (large binary)
+*.db
+*.sqlite
+*.sqlite3
+
+# Raw notes (too many files)
+raw_notes/
+
+# Graph output (can be regenerated)
+graph_output/
+
+# Island bridges (can be regenerated)
+island_bridges/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

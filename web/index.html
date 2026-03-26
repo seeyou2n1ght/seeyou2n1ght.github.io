@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌐 知识图谱全景视图</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        #graph-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+
+        #controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            min-width: 250px;
+        }
+
+        h1 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #00d9ff;
+            text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-label {
+            color: #aaa;
+        }
+
+        .stat-value {
+            color: #00d9ff;
+            font-weight: bold;
+        }
+
+        #info-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            max-width: 350px;
+            display: none;
+        }
+
+        #info-panel.active {
+            display: block;
+        }
+
+        .node-info h2 {
+            font-size: 16px;
+            color: #00d9ff;
+            margin-bottom: 10px;
+        }
+
+        .node-info p {
+            font-size: 13px;
+            color: #ccc;
+            margin: 5px 0;
+        }
+
+        .node-info .domain {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #00d9ff;
+            color: #000;
+            border-radius: 4px;
+            font-size: 11px;
+            margin: 5px 0;
+        }
+
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 2000;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 217, 255, 0.3);
+            border-top-color: #00d9ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .legend {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            font-size: 12px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        button {
+            background: #00d9ff;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            margin: 5px 0;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #00b8e6;
+            transform: translateY(-2px);
+        }
+
+        #search-box {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        #search-box::placeholder {
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div id="graph-container">
+        <div id="loading">
+            <div class="spinner"></div>
+            <p>加载知识图谱...</p>
+        </div>
+
+        <div id="controls">
+            <h1>🌐 知识图谱全景</h1>
+            
+            <div class="stat">
+                <span class="stat-label">实体节点</span>
+                <span class="stat-value" id="stat-nodes">-</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">关系边</span>
+                <span class="stat-value" id="stat-edges">-</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">语义边</span>
+                <span class="stat-value" id="stat-semantic">-</span>
+            </div>
+
+            <input type="text" id="search-box" placeholder="搜索节点...">
+
+            <button onclick="resetZoom()">🔄 重置视图</button>
+            <button onclick="toggleLabels()">🏷️ 切换标签</button>
+            <button onclick="focusOnIslands()">🏝️ 显示孤岛</button>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ff6b6b;"></div>
+                    <span>Tech (技术)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #4ecdc4;"></div>
+                    <span>Philosophy (哲学)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ffe66d;"></div>
+                    <span>Science (科学)</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="info-panel">
+            <div class="node-info">
+                <h2 id="info-title">节点信息</h2>
+                <span class="domain" id="info-domain">tech</span>
+                <p><strong>ID:</strong> <span id="info-id">-</span></p>
+                <p><strong>类型:</strong> <span id="info-type">-</span></p>
+                <p><strong>连接数:</strong> <span id="info-links">-</span></p>
+                <p><strong>语义相似度:</strong> <span id="info-similarity">-</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 颜色映射
+        const domainColors = {
+            'tech': '#ff6b6b',
+            'philosophy': '#4ecdc4',
+            'science': '#ffe66d',
+            'unknown': '#95a5a6'
+        };
+
+        let graph = null;
+        let simulation = null;
+        let svg = null;
+        let showLabels = true;
+
+        // 加载图谱数据
+        async function loadGraph() {
+            try {
+                const response = await fetch('/api/graph');
+                const data = await response.json();
+                
+                document.getElementById('stat-nodes').textContent = data.nodes.length;
+                document.getElementById('stat-edges').textContent = data.edges.length;
+                document.getElementById('stat-semantic').textContent = data.semantic_edges || 0;
+                
+                initGraph(data);
+                document.getElementById('loading').style.display = 'none';
+            } catch (error) {
+                console.error('加载图谱失败:', error);
+                document.getElementById('loading').innerHTML = '<p>加载失败，请刷新页面重试</p>';
+            }
+        }
+
+        // 初始化图谱
+        function initGraph(data) {
+            const container = document.getElementById('graph-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            // 创建 SVG
+            svg = d3.select('#graph-container').append('svg')
+                .attr('width', width)
+                .attr('height', height)
+                .call(d3.zoom().on('zoom', (event) => {
+                    g.attr('transform', event.transform);
+                }))
+                .append('g');
+
+            const g = svg.append('g');
+
+            // 创建力导向模拟
+            simulation = d3.forceSimulation(data.nodes)
+                .force('charge', d3.forceManyBody().strength(-100))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('link', d3.forceLink(data.edges).id(d => d.id).distance(100))
+                .force('collide', d3.forceCollide().radius(20));
+
+            // 绘制边
+            const links = g.append('g')
+                .selectAll('line')
+                .data(data.edges)
+                .join('line')
+                .attr('stroke', 'rgba(255, 255, 255, 0.2)')
+                .attr('stroke-width', 1.5);
+
+            // 绘制节点
+            const nodes = g.append('g')
+                .selectAll('circle')
+                .data(data.nodes)
+                .join('circle')
+                .attr('r', 15)
+                .attr('fill', d => domainColors[d.domain] || domainColors.unknown)
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 2)
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended))
+                .on('click', (event, d) => showNodeInfo(d));
+
+            // 添加标签
+            const labels = g.append('g')
+                .selectAll('text')
+                .data(data.nodes)
+                .join('text')
+                .text(d => d.label.length > 15 ? d.label.substring(0, 15) + '...' : d.label)
+                .attr('font-size', '10px')
+                .attr('fill', '#fff')
+                .attr('dx', 18)
+                .attr('dy', 4);
+
+            // 更新位置
+            simulation.on('tick', () => {
+                links
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+
+                nodes
+                    .attr('cx', d => d.x)
+                    .attr('cy', d => d.y);
+
+                labels
+                    .attr('x', d => d.x)
+                    .attr('y', d => d.y);
+            });
+
+            graph = { nodes, links, labels, simulation };
+        }
+
+        // 显示节点信息
+        function showNodeInfo(d) {
+            const panel = document.getElementById('info-panel');
+            document.getElementById('info-title').textContent = d.label;
+            document.getElementById('info-domain').textContent = d.domain;
+            document.getElementById('info-domain').style.background = domainColors[d.domain];
+            document.getElementById('info-id').textContent = d.id;
+            document.getElementById('info-type').textContent = d.type;
+            document.getElementById('info-links').textContent = d.connections || 0;
+            
+            panel.classList.add('active');
+        }
+
+        // 拖拽功能
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+
+        // 控制功能
+        function resetZoom() {
+            d3.select('svg').transition().call(
+                d3.zoom().transform,
+                d3.zoomIdentity
+            );
+        }
+
+        function toggleLabels() {
+            showLabels = !showLabels;
+            graph.labels.attr('display', showLabels ? 'block' : 'none');
+        }
+
+        function focusOnIslands() {
+            // 高亮显示连接数少的节点
+            graph.nodes.attr('stroke', d => {
+                return (d.connections || 0) < 2 ? '#ff0' : '#fff';
+            });
+        }
+
+        // 搜索功能
+        document.getElementById('search-box').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            if (query.length < 2) return;
+
+            const match = graph.nodes.data().find(n => 
+                n.label.toLowerCase().includes(query)
+            );
+
+            if (match) {
+                showNodeInfo(match);
+                // 平移到节点
+                d3.select('svg').transition().call(
+                    d3.zoom().transform,
+                    d3.zoomIdentity
+                        .translate(window.innerWidth / 2, window.innerHeight / 2)
+                        .scale(2)
+                        .translate(-match.x, -match.y)
+                );
+            }
+        });
+
+        // 页面加载
+        loadGraph();
+    </script>
+</body>
+</html>
